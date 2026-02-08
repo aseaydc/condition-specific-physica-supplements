@@ -1094,7 +1094,7 @@
             const tabletsMatch = dosageStr.match(/(\d+)(?:-(\d+)\+?)?\s*tablets?/i);
 
             // Extract frequency
-            const freqMatch = dosageStr.match(/(\d+)x\s*daily/i);
+            const freqMatch = dosageStr.match(/(\d+)x\s*(?:per day|daily)/i);
             let frequency = freqMatch ? parseInt(freqMatch[1]) : 1;
             
             // Check for medical abbreviations: tid=3x, bid=2x, qid=4x, qd=1x
