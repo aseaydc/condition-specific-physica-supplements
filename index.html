@@ -753,17 +753,16 @@
                 "Liver Milieu: 30 drops 2x daily",
                 "NAC Forte: 1-2 caps 3x daily"
             ],
-            "Lyme Disease": [
-                "Artemisia Intrinsic: 60 drops 2x daily",
-                "Bacteria-Tox: 30 drops 2x daily",
-                "Berberine Intrinsic: 60 drops 2x daily",
-                "BioHealth Matrix: 2 caps 2x daily",
-                "CataZyme-7: 1 cap before each meal",
-                "Drainage Milieu: 30 drops 2x daily",
-                "GB Milieu: 30 drops 2x daily",
-                "Lympho Code: 60 drops 2x daily",
-                "Mycoplasma-Tox: 30 drops 2x daily",
-                "Scrofulara Intrinsic: 60 drops 2x daily"
+            "Lyme Disease (multiple chronic infectious disease syndromes)": [
+                "Bacteria-Tox: 30 drops ww 2x per day",
+                "Berberine Intrinsic: 60 drops ww 3x per day",
+                "Glutathione (GSH) Liposome: 1-2 tsp 3x per day",
+                "Mycelia Intrinsic: 120 drops ww 3x per day",
+                "PRP53 Code Liposome: 3 sprays 2x per day",
+                "Scrofulara Intrinsic: 60 drops ww 3x per day",
+                "Solray-D Liposome Spray: 10-15+ sprays 1x per day",
+                "Thymus LF: 2 caps 3x per day",
+                "Wild Oregano Oil: 2 caps 3x per day"
             ],
             "Menopause": [
                 "Cohosh Intrinsic 114: 30 drops 2x daily",
@@ -966,7 +965,7 @@
             "Guggulipid Intrinsic": { price: 32.00, size: 1200, unit: "drops" },
             "Solray-D Liposome Spray": { price: 43.36, size: 500, unit: "sprays" },
             "Nat Colon CLR": { price: 37.96, size: 180, unit: "caps" },
-            "Mycelial Intrinsic": { price: 32.00, size: 1200, unit: "drops" },
+            "Mycelia Intrinsic": { price: 64.90, size: 1200, unit: "drops" },
             "Acetyl L-Carnitine": { price: 53.56, size: 90, unit: "caps" },
             "CAMU CAMU Vitamin C Liposome": { price: 45.24, size: 240, unit: "ml" },
             "Echina Intrinsic": { price: 32.00, size: 1200, unit: "drops" },
@@ -1098,10 +1097,21 @@
             const freqMatch = dosageStr.match(/(\d+)x\s*daily/i);
             let frequency = freqMatch ? parseInt(freqMatch[1]) : 1;
             
-            // If no explicit frequency, count meal times mentioned
+            // Check for medical abbreviations: tid=3x, bid=2x, qid=4x, qd=1x
             if (!freqMatch) {
-                const times = (dosageStr.match(/breakfast|lunch|dinner|10am|4pm|before bed/gi) || []).length;
-                if (times > 0) frequency = times;
+                if (/\btid\b/i.test(dosageStr)) {
+                    frequency = 3;
+                } else if (/\bbid\b/i.test(dosageStr)) {
+                    frequency = 2;
+                } else if (/\bqid\b/i.test(dosageStr)) {
+                    frequency = 4;
+                } else if (/\bqd\b/i.test(dosageStr)) {
+                    frequency = 1;
+                } else {
+                    // If no explicit frequency, count meal times mentioned
+                    const times = (dosageStr.match(/breakfast|lunch|dinner|10am|4pm|before bed/gi) || []).length;
+                    if (times > 0) frequency = times;
+                }
             }
 
             // Calculate daily amount based on unit type
